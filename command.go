@@ -13,9 +13,9 @@ type command struct {
 var commands = make(map[string]command)
 
 func RegisterCommands() {
-	commands["help"] = command{"help", HelpCommand}
-	commands["img"] = command{"img", ImgCommand}
-	commands["say"] = command{"say", SayCommand}
+	commands["~help"] = command{"help", HelpCommand}
+	commands["~img"] = command{"img", ImgCommand}
+	commands["~say"] = command{"say", SayCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
@@ -25,7 +25,7 @@ func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
 
 	content := m.Message.Content
 	split := strings.Split(content, " ")
-	command := strings.ToLower(split[0])[1:]
+	command := strings.ToLower(split[0])
 
 	returned, ok := commands[command]
 	if !ok {
