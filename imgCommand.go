@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	discord "github.com/bwmarrin/discordgo"
 	"golang.org/x/net/html"
 	"net/http"
@@ -12,7 +11,6 @@ func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 		return
 	}
 	img := GetImage()
-	fmt.Println(img)
 	s.ChannelMessageSendEmbed(m.ChannelID, &discord.MessageEmbed{
 		Title:       "Image",
 		Description: message,
