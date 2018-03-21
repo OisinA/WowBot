@@ -10,17 +10,19 @@ func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 	if m.Author.Bot {
 		return
 	}
-	img := GetImage()
+	ch := make(chan string)
+	go GetImage(ch)
+	img := <-ch
 	s.ChannelMessageSendEmbed(m.ChannelID, &discord.MessageEmbed{
 		Title:       "Image",
 		Description: message,
 		Image: &discord.MessageEmbedImage{
-			URL: GetImage(),
+			URL: img,
 		},
 	})
 }
 
-func GetImage() string {
+func GetImage(ch chan string) {
 	resp, _ := http.Get("https://apod.nasa.gov/apod/astropix.html")
 	z := html.NewTokenizer(resp.Body)
 OUTERLOOP:
@@ -36,11 +38,11 @@ OUTERLOOP:
 			if isImage {
 				for _, a := range t.Attr {
 					if a.Key == "src" {
-						return "https://apod.nasa.gov/apod/" + a.Val
+						ch <- "https://apod.nasa.gov/apod/" + a.Val
 					}
 				}
 			}
 		}
 	}
-	return ""
+	ch <- ""
 }
