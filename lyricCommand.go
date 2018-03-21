@@ -16,6 +16,10 @@ func LyricCommand(s *discord.Session, m *discord.MessageCreate, message string) 
 	ch := make(chan string)
 	go GetLyrics(ch, split[0], split[1])
 	lyrics := <-ch
+	if strings.Compare(lyrics, "error") == 0 {
+		s.ChannelMessageSend(m.ChannelID, "Lyrics not found.")
+		return
+	}
 	lyricList := make([]string, len(lyrics)/1000)
 	length := 0
 	for {
@@ -37,10 +41,15 @@ func GetLyrics(ch chan string, artist string, song string) {
 	read, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 	if err != nil {
-		ch <- ""
+		ch <- "error"
 		return
 	}
 	var dat map[string]interface{}
 	json.Unmarshal([]byte(read), &dat)
+	_, ok := dat["error"]
+	if ok {
+		ch <- "error"
+		return
+	}
 	ch <- dat["lyrics"].(string)
 }
