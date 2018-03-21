@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"syscall"
 	"os/signal"
+	"syscall"
 )
 
 func main() {
