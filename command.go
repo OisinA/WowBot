@@ -19,6 +19,7 @@ func RegisterCommands() {
 	commands["~lyrics"] = command{"lyrics", LyricCommand}
 	commands["~yesorno"] = command{"yesorno", YesOrNoCommand}
 	commands["~dadjoke"] = command{"dadjoke", DadJokeCommand}
+	commands["~save"] = command{"save", ImageSaveCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
