@@ -14,7 +14,7 @@ func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 	go GetImage(ch)
 	img := <-ch
 	s.ChannelMessageSendEmbed(m.ChannelID, &discord.MessageEmbed{
-		Title:       "Image",
+		Title:       "NASA Image Of The Day",
 		Description: message,
 		Image: &discord.MessageEmbedImage{
 			URL: img,
