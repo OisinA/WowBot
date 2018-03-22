@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	discord "github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"net/http"
