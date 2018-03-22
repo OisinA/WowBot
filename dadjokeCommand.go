@@ -40,6 +40,5 @@ func getJoke(ch chan string) {
 		ch <- ""
 		return
 	}
-	fmt.Println(string(read))
 	ch <- string(read)
 }
