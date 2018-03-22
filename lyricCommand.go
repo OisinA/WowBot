@@ -13,6 +13,10 @@ func LyricCommand(s *discord.Session, m *discord.MessageCreate, message string) 
 		return
 	}
 	split := strings.Split(message, "-")
+	if len(split) < 2 {
+		s.ChannelMessageSend(m.ChannelID, "Lyrics not found.")
+		return
+	}
 	ch := make(chan string)
 	go GetLyrics(ch, split[0], split[1])
 	lyrics := <-ch
