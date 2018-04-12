@@ -55,5 +55,10 @@ func GetLyrics(ch chan string, artist string, song string) {
 		ch <- "error"
 		return
 	}
-	ch <- dat["lyrics"].(string)
+	if dat["lyrics"] != nil {
+		ch <- dat["lyrics"].(string)
+		return
+	}
+
+	ch <- "error"
 }
