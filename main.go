@@ -23,6 +23,11 @@ func main() {
 		return
 	}
 
+	err = session.UpdateStatus(0, "~help")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	RegisterCommands()
 
 	session.AddHandler(ParseCommands)
