@@ -1,8 +1,9 @@
 package main
 
 import (
-	discord "github.com/bwmarrin/discordgo"
 	"strings"
+
+	discord "github.com/bwmarrin/discordgo"
 )
 
 type command struct {
@@ -20,6 +21,7 @@ func RegisterCommands() {
 	commands["~yesorno"] = command{"yesorno", YesOrNoCommand}
 	commands["~dadjoke"] = command{"dadjoke", DadJokeCommand}
 	commands["~save"] = command{"save", ImageSaveCommand}
+	commands["~ow"] = command{"ow", OverwatchCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
