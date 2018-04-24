@@ -7,21 +7,21 @@ import (
 )
 
 type command struct {
-	Name    string
-	Execute func(*discord.Session, *discord.MessageCreate, string)
+	Name        string
+	Description string
+	Execute     func(*discord.Session, *discord.MessageCreate, string)
 }
 
 var commands = make(map[string]command)
 
 func RegisterCommands() {
-	commands["~help"] = command{"help", HelpCommand}
-	commands["~img"] = command{"img", ImgCommand}
-	commands["~say"] = command{"say", SayCommand}
-	commands["~lyrics"] = command{"lyrics", LyricCommand}
-	commands["~yesorno"] = command{"yesorno", YesOrNoCommand}
-	commands["~dadjoke"] = command{"dadjoke", DadJokeCommand}
-	commands["~save"] = command{"save", ImageSaveCommand}
-	commands["~ow"] = command{"ow", OverwatchCommand}
+	commands["~help"] = command{"help", "List of commands.", HelpCommand}
+	commands["~img"] = command{"img", "Used to recall images saved using ~save.\nUsage: ~img [name]", ImgCommand}
+	commands["~lyrics"] = command{"lyrics", "Get the lyrics to a song.\nUsage: ~lyrics [artist]-[song]", LyricCommand}
+	commands["~yesorno"] = command{"yesorno", "Allow the bot to decide your fate with this command.\nUsage: ~yesorno", YesOrNoCommand}
+	commands["~dadjoke"] = command{"dadjoke", "Enjoy a fun dadjoke.\nUsage: ~dadjoke", DadJokeCommand}
+	commands["~save"] = command{"save", "Save an image, that you can recall with ~img.\nUsage: ~save [url] [name]", ImageSaveCommand}
+	commands["~ow"] = command{"ow", "Fetch your Overwatch statistics with this command.\nUsage: ~ow [battletag]", OverwatchCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
@@ -43,11 +43,20 @@ func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
 }
 
 func HelpCommand(s *discord.Session, m *discord.MessageCreate, message string) {
-	keys := make([]string, 0, len(commands))
-	for k := range commands {
-		keys = append(keys, k)
+	if len(message) == 0 {
+		keys := make([]string, 0, len(commands))
+		for k := range commands {
+			keys = append(keys, k)
+		}
+		s.ChannelMessageSend(m.ChannelID, "To use a command, send a message as follows: ~[command]\nTo find out more about a command, use ~help [command].\nAvailable commands: "+strings.Join(keys, ", "))
+	} else {
+		c, ok := commands["~"+message]
+		if !ok {
+			s.ChannelMessageSend(m.ChannelID, "Command not found.")
+			return
+		}
+		s.ChannelMessageSend(m.ChannelID, "~"+message+"\nDescription: "+c.Description)
 	}
-	s.ChannelMessageSend(m.ChannelID, "To use a command, send a message as follows: ~[command]\nAvailable commands: "+strings.Join(keys, ", "))
 }
 
 func SayCommand(s *discord.Session, m *discord.MessageCreate, message string) {

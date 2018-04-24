@@ -23,9 +23,10 @@ func OverwatchCommand(s *discord.Session, m *discord.MessageCreate, message stri
 		return
 	}
 	image := <-ch
+	level := <-ch
 	s.ChannelMessageSendEmbed(m.ChannelID, &discord.MessageEmbed{
 		Title:       message,
-		Description: "Rank: " + rank,
+		Description: "Level: " + level + "\nRank: " + rank,
 		Image: &discord.MessageEmbedImage{
 			URL: image,
 		},
@@ -81,7 +82,8 @@ func getStats(user string, ch chan string) {
 	if rank == nil {
 		ch <- "none"
 	} else {
-		ch <- fmt.Sprint(rank.(string))
+		ch <- fmt.Sprint(rank.(float64))
 	}
 	ch <- overallStats["avatar"].(string)
+	ch <- fmt.Sprint((overallStats["prestige"].(float64) * 100) + overallStats["level"].(float64))
 }
