@@ -72,12 +72,12 @@ func getStats(user string, ch chan string) {
 		ch <- ""
 		return
 	}
-	overall_stats := competitive["overall_stats"].(map[string]interface{})
-	if overall_stats == nil {
+	overallStats := competitive["overall_stats"].(map[string]interface{})
+	if overallStats == nil {
 		ch <- ""
 		return
 	}
-	rank := overall_stats["comprank"].(float64)
+	rank := overallStats["comprank"].(float64)
 	ch <- fmt.Sprint(rank)
-	ch <- overall_stats["avatar"].(string)
+	ch <- overallStats["avatar"].(string)
 }
