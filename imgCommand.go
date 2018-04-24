@@ -1,13 +1,18 @@
 package main
 
 import (
-	discord "github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"net/http"
+
+	discord "github.com/bwmarrin/discordgo"
 )
 
 func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 	if m.Author.Bot {
+		return
+	}
+	if len(message) < 1 {
+		s.ChannelMessageSend(m.ChannelID, "No image specified.")
 		return
 	}
 	url := "http://oisinaylward.me/imgs/" + m.Author.ID + "/" + message + ".png"
