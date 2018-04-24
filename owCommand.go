@@ -77,7 +77,11 @@ func getStats(user string, ch chan string) {
 		ch <- ""
 		return
 	}
-	rank := overallStats["comprank"].(float64)
-	ch <- fmt.Sprint(rank)
+	rank := overallStats["comprank"]
+	if rank == nil {
+		ch <- "none"
+	} else {
+		ch <- fmt.Sprint(rank.(string))
+	}
 	ch <- overallStats["avatar"].(string)
 }
