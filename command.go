@@ -25,6 +25,9 @@ func RegisterCommands() {
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
+	if IsBetaUserConnected(s, m) && !beta {
+		return
+	}
 	if m.Author.Bot {
 		return
 	}
@@ -40,6 +43,19 @@ func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
 
 	returned.Execute(s, m, strings.Join(split[1:], " "))
 	return
+}
+
+func IsBetaUserConnected(s *discord.Session, m *discord.MessageCreate) bool {
+	c, err := s.State.Channel(m.ChannelID)
+	if err != nil {
+		return false
+	}
+
+	_, err = s.GuildMember(c.GuildID, "452445290365059072")
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 func HelpCommand(s *discord.Session, m *discord.MessageCreate, message string) {
