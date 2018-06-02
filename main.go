@@ -1,13 +1,17 @@
 package main
 
 import (
-	discord "github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
+
+	discord "github.com/bwmarrin/discordgo"
 )
+
+var beta = false
 
 func main() {
 	session, err := discord.New("Bot " + ReadToken())
@@ -38,7 +42,12 @@ func main() {
 }
 
 func ReadToken() string {
-	dat, err := ioutil.ReadFile("token.txt")
+	file := "token.txt"
+	if runtime.GOOS == "windows" {
+		file = "token_beta.txt"
+		beta = true
+	}
+	dat, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatal(err)
 		return ""
