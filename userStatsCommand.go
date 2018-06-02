@@ -20,7 +20,6 @@ func UserStatsCommand(s *discord.Session, m *discord.MessageCreate, message stri
 	}
 
 	user := split[0]
-	fmt.Printf(user)
 	s.ChannelMessageSend(m.ChannelID, getUserStats(s, m, user))
 }
 
