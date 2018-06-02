@@ -22,6 +22,7 @@ func RegisterCommands() {
 	commands["~dadjoke"] = command{"dadjoke", "Enjoy a fun dadjoke.\nUsage: ~dadjoke", DadJokeCommand}
 	commands["~save"] = command{"save", "Save an image, that you can recall with ~img.\nUsage: ~save [url] [name]", ImageSaveCommand}
 	commands["~ow"] = command{"ow", "Fetch your Overwatch statistics with this command.\nUsage: ~ow [battletag]", OverwatchCommand}
+	commands["~stats"] = command{"stats", "Fetch the stats of a user in your discord server.\nUsage: ~stats [user]", UserStatsCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
