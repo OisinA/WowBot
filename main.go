@@ -42,9 +42,9 @@ func main() {
 }
 
 func ReadToken() string {
-	file := "token.txt"
+	file := "token/token.txt"
 	if runtime.GOOS == "windows" {
-		file = "token_beta.txt"
+		file = "token/token_beta.txt"
 		beta = true
 	}
 	dat, err := ioutil.ReadFile(file)
