@@ -9,20 +9,22 @@ import (
 type command struct {
 	Name        string
 	Description string
+	Show        bool
 	Execute     func(*discord.Session, *discord.MessageCreate, string)
 }
 
 var commands = make(map[string]command)
 
 func RegisterCommands() {
-	commands["~help"] = command{"help", "List of commands.", HelpCommand}
-	commands["~img"] = command{"img", "Used to recall images saved using ~save.\nUsage: ~img [name]", ImgCommand}
-	commands["~lyrics"] = command{"lyrics", "Get the lyrics to a song.\nUsage: ~lyrics [artist]-[song]", LyricCommand}
-	commands["~yesorno"] = command{"yesorno", "Allow the bot to decide your fate with this command.\nUsage: ~yesorno", YesOrNoCommand}
-	commands["~dadjoke"] = command{"dadjoke", "Enjoy a fun dadjoke.\nUsage: ~dadjoke", DadJokeCommand}
-	commands["~save"] = command{"save", "Save an image, that you can recall with ~img.\nUsage: ~save [url] [name]", ImageSaveCommand}
-	commands["~ow"] = command{"ow", "Fetch your Overwatch statistics with this command.\nUsage: ~ow [battletag]", OverwatchCommand}
-	commands["~stats"] = command{"stats", "Fetch the stats of a user in your discord server.\nUsage: ~stats [user]", UserStatsCommand}
+	commands["~help"] = command{"help", "List of commands.", true, HelpCommand}
+	commands["~img"] = command{"img", "Used to recall images saved using ~save.\nUsage: ~img [name]", true, ImgCommand}
+	commands["~lyrics"] = command{"lyrics", "Get the lyrics to a song.\nUsage: ~lyrics [artist]-[song]", true, LyricCommand}
+	commands["~yesorno"] = command{"yesorno", "Allow the bot to decide your fate with this command.\nUsage: ~yesorno", true, YesOrNoCommand}
+	commands["~dadjoke"] = command{"dadjoke", "Enjoy a fun dadjoke.\nUsage: ~dadjoke", true, DadJokeCommand}
+	commands["~save"] = command{"save", "Save an image, that you can recall with ~img.\nUsage: ~save [url] [name]", true, ImageSaveCommand}
+	commands["~ow"] = command{"ow", "Fetch your Overwatch statistics with this command.\nUsage: ~ow [battletag]", true, OverwatchCommand}
+	commands["~stats"] = command{"stats", "Fetch the stats of a user in your discord server.\nUsage: ~stats [user]", true, UserStatsCommand}
+	commands["~status"] = command{"status", "", false, SetStatusCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
@@ -63,7 +65,9 @@ func HelpCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 	if len(message) == 0 {
 		keys := make([]string, 0, len(commands))
 		for k := range commands {
-			keys = append(keys, k)
+			if commands[k].Show {
+				keys = append(keys, k)
+			}
 		}
 		s.ChannelMessageSend(m.ChannelID, "To use a command, send a message as follows: ~[command]\nTo find out more about a command, use ~help [command].\nAvailable commands: "+strings.Join(keys, ", "))
 	} else {
