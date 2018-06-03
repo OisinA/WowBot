@@ -6,11 +6,11 @@ ENV GOPATH=/go
 
 COPY . .
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+RUN go get ./
+RUN go build
 
 WORKDIR /go/wowbot
 
 EXPOSE 8080
 
-CMD ["WowBot"]
+CMD ["./WowBot"]
