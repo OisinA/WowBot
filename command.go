@@ -25,6 +25,7 @@ func RegisterCommands() {
 	commands["~ow"] = command{"ow", "Fetch your Overwatch statistics with this command.\nUsage: ~ow [battletag]", true, OverwatchCommand}
 	commands["~stats"] = command{"stats", "Fetch the stats of a user in your discord server.\nUsage: ~stats [user]", true, UserStatsCommand}
 	commands["~status"] = command{"status", "", false, SetStatusCommand}
+	commands["~report"] = command{"report", "Report a bug or suggest a feature.\nUsage: ~report [message]", true, ReportCommand}
 }
 
 func ParseCommands(s *discord.Session, m *discord.MessageCreate) {
