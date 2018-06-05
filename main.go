@@ -54,3 +54,17 @@ func ReadToken() string {
 	}
 	return string(dat)
 }
+
+func SendMessage(s *discord.Session, channelID string, message string) {
+	user, err := s.User("452445290365059072")
+	if err != nil {
+		return
+	}
+	s.ChannelMessageSendEmbed(channelID, &discord.MessageEmbed{
+		Title: "WowBot",
+		Thumbnail: &discord.MessageEmbedThumbnail{
+			URL: user.AvatarURL("32"),
+		},
+		Description: message,
+	})
+}

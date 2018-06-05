@@ -16,5 +16,5 @@ func ReportCommand(s *discord.Session, m *discord.MessageCreate, message string)
 	}
 
 	s.ChannelMessageSend(ch.ID, m.Author.String()+" > "+message)
-	s.ChannelMessageSend(m.ChannelID, "Your report was sent.")
+	SendMessage(s, m.ChannelID, "Your report was sent.")
 }

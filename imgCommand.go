@@ -12,7 +12,7 @@ func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 		return
 	}
 	if len(message) < 1 {
-		s.ChannelMessageSend(m.ChannelID, "No image specified.")
+		SendMessage(s, m.ChannelID, "No image specified.")
 		return
 	}
 	url := "http://oisinaylward.me/imgs/" + m.Author.ID + "/" + message + ".png"
@@ -20,7 +20,7 @@ func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 	go DoesExist(channel, url)
 	exists := <-channel
 	if exists == "error" {
-		s.ChannelMessageSend(m.ChannelID, "No image found.")
+		SendMessage(s, m.ChannelID, "No image found.")
 		return
 	}
 	s.ChannelMessageSendEmbed(m.ChannelID, &discord.MessageEmbed{

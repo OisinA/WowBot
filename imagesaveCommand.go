@@ -1,11 +1,12 @@
 package main
 
 import (
-	discord "github.com/bwmarrin/discordgo"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	discord "github.com/bwmarrin/discordgo"
 )
 
 var suffixes = []string{
@@ -23,7 +24,7 @@ func ImageSaveCommand(s *discord.Session, m *discord.MessageCreate, message stri
 	split := strings.Split(message, " ")
 
 	if len(split) < 2 {
-		s.ChannelMessageSend(m.ChannelID, "Incorrect syntax.")
+		SendMessage(s, m.ChannelID, "Incorrect syntax.")
 		return
 	}
 
@@ -34,7 +35,7 @@ func ImageSaveCommand(s *discord.Session, m *discord.MessageCreate, message stri
 
 	go saveImage(channel, url, name, m.Author.ID)
 
-	s.ChannelMessageSend(m.ChannelID, <-channel)
+	SendMessage(s, m.ChannelID, <-channel)
 }
 
 func saveImage(ch chan string, url string, name string, userID string) {

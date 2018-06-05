@@ -1,9 +1,10 @@
 package main
 
 import (
-	discord "github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"net/http"
+
+	discord "github.com/bwmarrin/discordgo"
 )
 
 func DadJokeCommand(s *discord.Session, m *discord.MessageCreate, message string) {
@@ -14,10 +15,10 @@ func DadJokeCommand(s *discord.Session, m *discord.MessageCreate, message string
 	go getJoke(ch)
 	joke := <-ch
 	if joke == "" {
-		s.ChannelMessageSend(m.ChannelID, "There was an error fetching your joke.")
+		SendMessage(s, m.ChannelID, "There was an error fetching your joke.")
 		return
 	}
-	s.ChannelMessageSend(m.ChannelID, joke)
+	SendMessage(s, m.ChannelID, joke)
 }
 
 func getJoke(ch chan string) {

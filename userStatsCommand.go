@@ -15,12 +15,12 @@ func UserStatsCommand(s *discord.Session, m *discord.MessageCreate, message stri
 	split := strings.Split(message, " ")
 
 	if len(split) != 1 {
-		s.ChannelMessageSend(m.ChannelID, "Incorrect usage.")
+		SendMessage(s, m.ChannelID, "Incorrect usage.")
 		return
 	}
 
 	user := split[0]
-	s.ChannelMessageSend(m.ChannelID, getUserStats(s, m, user))
+	SendMessage(s, m.ChannelID, getUserStats(s, m, user))
 }
 
 func getUserStats(s *discord.Session, m *discord.MessageCreate, username string) string {

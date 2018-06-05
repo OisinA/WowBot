@@ -2,10 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	discord "github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	discord "github.com/bwmarrin/discordgo"
 )
 
 func LyricCommand(s *discord.Session, m *discord.MessageCreate, message string) {
@@ -14,14 +15,14 @@ func LyricCommand(s *discord.Session, m *discord.MessageCreate, message string) 
 	}
 	split := strings.Split(message, "-")
 	if len(split) < 2 {
-		s.ChannelMessageSend(m.ChannelID, "Lyrics not found.")
+		SendMessage(s, m.ChannelID, "Lyrics not found.")
 		return
 	}
 	ch := make(chan string)
 	go GetLyrics(ch, split[0], split[1])
 	lyrics := <-ch
 	if strings.Compare(lyrics, "error") == 0 {
-		s.ChannelMessageSend(m.ChannelID, "Lyrics not found.")
+		SendMessage(s, m.ChannelID, "Lyrics not found.")
 		return
 	}
 	lyricList := make([]string, len(lyrics)/1000)
@@ -36,7 +37,7 @@ func LyricCommand(s *discord.Session, m *discord.MessageCreate, message string) 
 	}
 	s.ChannelMessageSend(m.ChannelID, "Lyrics: ")
 	for _, i := range lyricList {
-		s.ChannelMessageSend(m.ChannelID, string(i))
+		SendMessage(s, m.ChannelID, string(i))
 	}
 }
 

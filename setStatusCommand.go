@@ -13,9 +13,9 @@ func SetStatusCommand(s *discord.Session, m *discord.MessageCreate, message stri
 
 	err := s.UpdateStatus(0, message)
 	if err != nil {
-		s.ChannelMessageSend(m.ChannelID, "Something went wrong.")
+		SendMessage(s, m.ChannelID, "Something went wrong.")
 		log.Fatal(err)
 	}
 
-	s.ChannelMessageSend(m.ChannelID, "Status updated.")
+	SendMessage(s, m.ChannelID, "Status updated.")
 }
