@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
@@ -12,9 +14,11 @@ import (
 )
 
 var beta = false
+var session *discord.Session
 
 func main() {
-	session, err := discord.New("Bot " + ReadToken())
+	var err error
+	session, err = discord.New("Bot " + ReadToken())
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -33,6 +37,8 @@ func main() {
 	}
 
 	RegisterCommands()
+
+	go StartWebServer(session)
 
 	session.AddHandler(ParseCommands)
 
@@ -67,4 +73,19 @@ func SendMessage(s *discord.Session, channelID string, message string) {
 		},
 		Description: message,
 	})
+}
+
+func PageHandle(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Connected servers: ")
+	for _, g := range session.State.Guilds {
+		fmt.Fprintf(w, g.Name+"\n")
+	}
+}
+
+func StartWebServer(s *discord.Session) {
+	http.HandleFunc("/", PageHandle)
+	err := http.ListenAndServe(":1337", nil)
+	if err != nil {
+		return
+	}
 }
