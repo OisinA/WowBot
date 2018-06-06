@@ -17,5 +17,6 @@ ENV PATH=/go/wowbot:${PATH}
 WORKDIR /go/wowbot
 
 EXPOSE 8080
+EXPOSE 1337
 
 CMD ["WowBot"]
