@@ -70,17 +70,17 @@ func HelpCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 				keys = append(keys, k)
 			}
 		}
-		s.ChannelMessageSend(m.ChannelID, "To use a command, send a message as follows: ~[command]\nTo find out more about a command, use ~help [command].\nAvailable commands: "+strings.Join(keys, ", "))
+		SendMessage(s, m.ChannelID, "To use a command, send a message as follows: ~[command]\nTo find out more about a command, use ~help [command].\nAvailable commands: "+strings.Join(keys, ", "))
 	} else {
 		c, ok := commands["~"+message]
 		if !ok {
-			s.ChannelMessageSend(m.ChannelID, "Command not found.")
+			SendMessage(s, m.ChannelID, "Command not found.")
 			return
 		}
-		s.ChannelMessageSend(m.ChannelID, "~"+message+"\nDescription: "+c.Description)
+		SendMessage(s, m.ChannelID, "~"+message+"\nDescription: "+c.Description)
 	}
 }
 
 func SayCommand(s *discord.Session, m *discord.MessageCreate, message string) {
-	s.ChannelMessageSend(m.ChannelID, m.Author.Username+" - "+message)
+	SendMessage(s, m.ChannelID, m.Author.Username+" - "+message)
 }
