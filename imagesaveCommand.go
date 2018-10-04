@@ -62,9 +62,9 @@ func saveImage(ch chan string, url string, name string, userID string) {
 
 	defer resp.Body.Close()
 
-	os.Mkdir("/home/WebServer/imgs/"+userID, os.ModePerm)
+	os.Mkdir("/home/images"+userID, os.ModePerm)
 
-	file, err := os.Create("/home/WebServer/imgs/" + userID + "/" + name + ".png")
+	file, err := os.Create("/home/images/" + userID + "/" + name + ".png")
 	if err != nil {
 		ch <- "Couldn't save your image."
 		return
