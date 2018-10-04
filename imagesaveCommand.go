@@ -21,9 +21,6 @@ func ImageSaveCommand(s *discord.Session, m *discord.MessageCreate, message stri
 		return
 	}
 
-	SendMessage(s, m.ChannelID, "Temporarily disabled :(")
-	return
-
 	split := strings.Split(message, " ")
 
 	if len(split) < 2 {
