@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	discord "github.com/bwmarrin/discordgo"
 )
@@ -22,14 +23,14 @@ func ImgCommand(s *discord.Session, m *discord.MessageCreate, message string) {
 		return
 	}
 	defer f.Close()
-	ms := &dg.MessageSend{
-		Embed: &dg.MessageEmbed{
-			Image: &dg.MessageEmbedImage{
+	ms := &discord.MessageSend{
+		Embed: &discord.MessageEmbed{
+			Image: &discord.MessageEmbedImage{
 				URL: "attachment://" + url,
 			},
 		},
-		Files: []*dg.File{
-			&dg.File{
+		Files: []*discord.File{
+			&discord.File{
 				Name:   url,
 				Reader: f,
 			},
